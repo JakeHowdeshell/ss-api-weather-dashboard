@@ -9,7 +9,6 @@ var formSubmittal = function (event) {
   var city = cityInput.value.trim();
   if (city) {
     getWeather(city);
-    //saveSearches(city);
     currentWeatherContainerEl.textContent = "";
     futureWeatherContainerEl.textContent = "";
     cityInput.value = "";
@@ -35,14 +34,18 @@ var getWeather = function (city) {
     .then(function (data) {
       console.log(data);
       var date = data.list[0].dt_txt;
+      // need to seperate the date from the time at the space and return just the date then rearrange the date by placing it in an array
+      // or cal lthe unix number and format using that
+      var cityName = data.city.name;
       var currentWeather = data.list[0];
       var fiveDayWeather = data.list;
-      displayCurrentWeather(currentWeather, city, date);
-      displayFiveDayWeather(fiveDayWeather, city);
+      displayCurrentWeather(currentWeather, cityName, date);
+      displayFiveDayWeather(fiveDayWeather);
+      saveSearches(cityName);
     });
 };
 
-var displayCurrentWeather = function (currentWeather, city, date) {
+var displayCurrentWeather = function (currentWeather, cityName, date) {
   var icon = currentWeather.weather[0].icon;
   var temp = currentWeather.main.temp;
   var wind = currentWeather.wind.speed;
@@ -64,7 +67,7 @@ var displayCurrentWeather = function (currentWeather, city, date) {
     "https://openweathermap.org/img/w/" + icon + ".png"
   );
   iconEl.appendChild(iconImg);
-  var searchedCity = document.createTextNode(city + " " + date);
+  var searchedCity = document.createTextNode(cityName + " " + date);
   cityEl.appendChild(searchedCity);
 
   forcastEl.appendChild(iconEl);
@@ -82,20 +85,45 @@ var displayFiveDayWeather = function (fiveDayWeather, city) {
   var header = document.createTextNode("5-Day Forcast:");
   headerEl.appendChild(header);
   futureWeatherContainerEl.appendChild(headerEl);
-
-  for (var i = 0; i < fiveDayWeather.length; i++){
-    
+  // need to make this display cards of the weather for the next 5 days
+  for (var i = 0; i < fiveDayWeather.length; i++) {
+    console.log(fiveDayWeather[i]);
   }
-
 };
 
-var saveSearches = function(){
+var saveSearches = function (cityName) {
+  var cityArray = JSON.parse(localStorage.getItem("searchedCity")) || [];
+  var existingCity = cityArray.indexOf(cityName);
 
-}
+  if (existingCity !== -1) {
+    cityArray[existingCity] = cityName;
+  } else {
+    cityArray.push(cityName);
+  }
+  var cities = JSON.stringify(cityArray);
+  localStorage.setItem("searchedCity", cities);
 
-var displaySearches = function(){
+  displaySearches(cityArray);
+};
 
-}
+var displaySearches = function (cityArray) {
+  resultsContainerEl.innerHTML = "";
 
+  cityArray.forEach(function (city) {
+    var resultItem = document.createElement("li");
+    var cityBtn = document.createElement("button");
+    cityBtn.textContent = city;
+    cityBtn.addEventListener("click", function () {
+      currentWeatherContainerEl.textContent = "";
+      futureWeatherContainerEl.textContent = "";
+      getWeather(city);
+    });
+    resultItem.appendChild(cityBtn);
+    resultsContainerEl.appendChild(resultItem);
+  });
+};
+
+var cityArray = JSON.parse(localStorage.getItem("searchedCity")) || [];
+displaySearches(cityArray);
 
 userFormEl.addEventListener("submit", formSubmittal);
