@@ -7,14 +7,12 @@ var futureWeatherContainerEl = document.querySelector("#future-weather");
 var formSubmittal = function (event) {
   event.preventDefault();
   var city = cityInput.value.trim();
-  if (city) {
-    getWeather(city);
-    currentWeatherContainerEl.textContent = "";
-    futureWeatherContainerEl.textContent = "";
-    cityInput.value = "";
-  } else {
-    // display "please insert city"
-  }
+
+  getWeather(city);
+  currentWeatherContainerEl.textContent = "";
+  futureWeatherContainerEl.textContent = "";
+  cityInput.value = "";
+  cityInput.placeholder = "Enter a city...";
 };
 
 var getWeather = function (city) {
@@ -29,6 +27,8 @@ var getWeather = function (city) {
     .then(function (response) {
       if (response.ok) {
         return response.json();
+      } else {
+        cityInput.placeholder = "Please try again";
       }
     })
     .then(function (data) {
