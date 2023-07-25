@@ -33,18 +33,64 @@ main {
 .search-results li {
   display: flex;
   flex-direction: column;
+  text-align: center;
+  margin: 10px 5px;
+}
 
-  margin: 10px;
+.results-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.results-list button {
+  border-radius: 5px;
 }
 
 /* Current Weather Style */
 .current-weather {
-  border: 2px, solid, black;
   margin: 10px 5px;
+  border: 2px solid black;
+}
+
+.hidden{
+    display: none;
+}
+.current-weather h2 {
+  font-size: larger;
+}
+
+.current-weather li {
+  list-style: none;
+  margin: 10px 0;
 }
 
 /* Future Weather Styles */
-
 .future-weather {
   display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+
+.future-weather h3 {
+  font-size: medium;
+  margin-left: 10px;
+}
+
+.cards {
+  display: flex;
+  color: white;
+}
+.cards div {
+  background-color: rgb(88, 88, 180);
+  margin: 0 10px;
+}
+
+.cards h3 {
+  font-size: smaller;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.cards li {
+  list-style: none;
 }

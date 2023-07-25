@@ -14,6 +14,7 @@ var formSubmittal = function (event) {
 
   getWeather(city);
   currentWeatherContainerEl.textContent = "";
+  currentWeatherContainerEl.classList.add("hidden");
   futureWeatherContainerEl.textContent = "";
   cityInput.value = "";
   cityInput.placeholder = "Enter a city...";
@@ -54,6 +55,7 @@ var getWeather = function (city) {
 // to display the icon, temperature, windspeed, and humidity in the above defined
 // current weather container element.
 var displayCurrentWeather = function (currentWeather, cityName, date) {
+  currentWeatherContainerEl.classList.remove("hidden");
   var icon = currentWeather.weather[0].icon;
   var temp = currentWeather.main.temp;
   var wind = currentWeather.wind.speed;
@@ -97,6 +99,9 @@ var displayFiveDayWeather = function (fiveDayWeather) {
   var header = document.createTextNode("5-Day Forecast:");
   headerEl.appendChild(header);
   futureWeatherContainerEl.appendChild(headerEl);
+  var cards = document.createElement("div");
+  cards.className = "cards";
+  futureWeatherContainerEl.appendChild(cards);
   var forecastDate = new Date(
     fiveDayWeather.list[0].dt * 1000
   ).toLocaleDateString("en-US");
@@ -152,7 +157,7 @@ var displayFiveDayWeather = function (fiveDayWeather) {
       cardEl.appendChild(dateEl);
       cardEl.appendChild(forcastEl);
 
-      futureWeatherContainerEl.appendChild(cardEl);
+      cards.appendChild(cardEl);
     }
   }
 };
