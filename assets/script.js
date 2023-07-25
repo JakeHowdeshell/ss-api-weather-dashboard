@@ -106,22 +106,17 @@ var displayFiveDayWeather = function (fiveDayWeather) {
     fiveDayWeather.list[0].dt * 1000
   ).toLocaleDateString("en-US");
   for (var i = 0; i < fiveDayWeather.list.length; i++) {
-    console.log(fiveDayWeather);
     var date = new Date(fiveDayWeather.list[i].dt * 1000).toLocaleDateString(
       "en-US"
     );
-    console.log(forecastDate);
-    console.log(date);
     if (date === forecastDate) {
       i++;
-      console.log(i);
     } else if (date !== forecastDate) {
       if (i === 36) {
         i += 3;
       } else {
         i += 4;
       }
-      console.log(i);
       forecastDate = date;
 
       var icon = fiveDayWeather.list[i].weather[0].icon;
@@ -162,8 +157,8 @@ var displayFiveDayWeather = function (fiveDayWeather) {
   }
 };
 // this function saves the cityName to local storage and if it is a name that
-// has already been input then replaces the existing input with the new name
-// turns the array into a string and
+// has already been input then it replaces the existing input with the new name
+// turns the array into a string and sets it wit a key in local storage.
 var saveSearches = function (cityName) {
   var cityArray = JSON.parse(localStorage.getItem("searchedCity")) || [];
   var existingCity = cityArray.indexOf(cityName);
@@ -178,10 +173,11 @@ var saveSearches = function (cityName) {
 
   displaySearches(cityArray);
 };
-
+// this function takes the city array stored in local storage and displays it on the
+// page as a button with a click event listener that calls the getWeather function
+// with the city that is the text inside the button.
 var displaySearches = function (cityArray) {
   resultsContainerEl.innerHTML = "";
-
   cityArray.forEach(function (city) {
     var resultItem = document.createElement("li");
     var cityBtn = document.createElement("button");
